@@ -1,5 +1,7 @@
-- id: some-id
-  name: some-name
-  description: some description
-  entry: print-arguments
+- id: update_owner_tag
+  name: Update Owner Tag
+  description: Update your owner tag automatically
+  entry: main
   language: python
+  files: ^.*\.tfvars$
+  always_run: true
