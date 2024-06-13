@@ -4,12 +4,11 @@ script.tfvars
 .vscode/
 *.swp
 *.swo
-./*.egg-info
 
 
 # Ignore the build and .egg-info directories within the-hook
 the-hook/build/
 the-hook/print_arguments.egg-info/
 
-build/
-print_arguments.egg-info/
+build
+print_arguments.egg-info
