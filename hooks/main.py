@@ -7,7 +7,7 @@ import sys
 # Configure logging
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
-TFVARS_FILE = "z_test/script.tfvars"
+TFVARS_FILE = "script.tfvars"
 
 def get_caller_identity():
     logging.debug("Executing get_caller_identity")
