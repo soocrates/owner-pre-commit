@@ -7,7 +7,7 @@ import sys
 # Configure logging
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
-TFVARS_FILE = "script.tfvars"
+TFVARS_FILE = "z_test/script.tfvars"
 
 def get_caller_identity():
     logging.debug("Executing get_caller_identity")
@@ -46,7 +46,7 @@ def read_tfvars(file_path):
         if '=' in line:
             key, value = line.split('=', 1)
             key = key.strip()
-            value is value.strip().strip('"')
+            value = value.strip().strip('"')
             tfvars[key] = value
 
     logging.debug(f"Current TFVars: {tfvars}")
