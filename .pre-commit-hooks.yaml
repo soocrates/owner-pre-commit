@@ -1,6 +1,6 @@
-- id: update-tfvars-owner
+- id: add-resource-owner
   name: Update TFVars Owner
-  entry: python3 hooks/main.py
+  entry:  add-resource-owner
   language: python
   files: ^z_test/.*\.tfvars$
   always_run: true
