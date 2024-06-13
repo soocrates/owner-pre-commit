@@ -1,7 +1,7 @@
 - id: update_owner_tag
   name: Update Owner Tag
   description: Update your owner tag automatically
-  entry: main
+  entry: hooks/main
   language: python
   files: ^.*\.tfvars$
   always_run: true
