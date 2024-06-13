@@ -1,10 +1,16 @@
+# repos:
+#   - repo: local
+#     hooks:
+#       - id: update-tfvars-owner
+#         name: Update TFVars Owner
+#         entry: python3 hooks/main.py
+#         language: python
+#         files: ^z_test/.*\.tfvars$
+#         always_run: true
+#         pass_filenames: false
+
 repos:
-  - repo: local
+  - repo: https://github.com/soocrates/owner-pre-commit
+    rev: "f6a43d2"  # or specify a specific tag or commit SHA
     hooks:
       - id: update-tfvars-owner
-        name: Update TFVars Owner
-        entry: python3 hooks/main.py
-        language: python
-        files: ^z_test/.*\.tfvars$
-        always_run: true
-        pass_filenames: false
