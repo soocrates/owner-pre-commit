@@ -1,7 +1,7 @@
 setup.cfg
 setup.py
-print_arguements/__init__.py
-print_arguements/main.py
+print_arguments/__init__.py
+print_arguments/main.py
 print_arguments.egg-info/PKG-INFO
 print_arguments.egg-info/SOURCES.txt
 print_arguments.egg-info/dependency_links.txt
