@@ -1,2 +1,7 @@
 hooks-venv
 script.tfvars
+# text editor
+.vscode/
+*.swp
+*.swo
+/*.egg-info

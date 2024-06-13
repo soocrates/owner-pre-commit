@@ -1,0 +1,8 @@
+
+- id: update-tfvars-owner
+  name: Update TFVars Owner
+  entry: the-hook/update_tfvars_owner.py
+  language: python
+  files: ^.*\.tfvars$
+  always_run: true
+  pass_filenames: false
