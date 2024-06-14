@@ -52,13 +52,13 @@ def update_owner_in_file(owner, file_path):
     lines = read_tf_file(file_path)
     updated = False
     for i, line in enumerate(lines):
-        if line.strip().startswith('owner'):
-            key, value = line.split('=', 1)
-            current_value = value.strip().strip('"')
+        if 'owner' in line and '=' in line:
+            parts = line.split('=', 1)
+            key = parts[0].strip()
+            current_value = parts[1].strip().strip('"')
             if current_value != owner:
-                lines[i] = f'{key.strip()} = "{owner}"\n'
+                lines[i] = f'{key} = "{owner}"\n'
                 updated = True
-            break
 
     if updated:
         write_tf_file(file_path, lines)
@@ -73,7 +73,7 @@ def main():
 
     if owner:
         logging.info(f"Owner: {owner}")
-        tf_files = [file for file in glob.glob("*.tf") if os.path.isfile(file)]
+        tf_files = [file for file in glob.glob("**/*.tf", recursive=True) if os.path.isfile(file)]
         for file_path in tf_files:
             update_owner_in_file(owner, file_path)
         return 0
