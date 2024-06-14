@@ -3,11 +3,10 @@ import json
 import logging
 import os
 import sys
+import glob
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
-
-TFVARS_FILE = "script.tfvars"
 
 def get_caller_identity():
     logging.debug("Executing get_caller_identity")
@@ -32,40 +31,40 @@ def extract_username(identity):
         return username
     return None
 
-def read_tfvars(file_path):
-    logging.debug(f"Reading TFVars file: {file_path}")
+def read_tf_file(file_path):
+    logging.debug(f"Reading file: {file_path}")
     if not os.path.exists(file_path):
-        logging.debug("TFVars file does not exist.")
-        return {}
+        logging.debug("File does not exist.")
+        return []
 
     with open(file_path, 'r') as file:
         lines = file.readlines()
 
-    tfvars = {}
-    for line in lines:
-        if '=' in line:
-            key, value = line.split('=', 1)
-            key = key.strip()
-            value = value.strip().strip('"')
-            tfvars[key] = value
+    return lines
 
-    logging.debug(f"Current TFVars: {tfvars}")
-    return tfvars
-
-def write_tfvars(file_path, tfvars):
-    logging.debug(f"Writing TFVars file: {file_path} with values: {tfvars}")
+def write_tf_file(file_path, lines):
+    logging.debug(f"Writing file: {file_path} with new content.")
     with open(file_path, 'w') as file:
-        for key, value in tfvars.items():
-            file.write(f'{key} = "{value}"\n')
-    logging.debug(f"Updated TFVars file: {file_path}")
+        file.writelines(lines)
 
-def update_owner_in_tfvars(owner):
-    logging.debug(f"Updating owner in TFVars to: {owner}")
-    tfvars = read_tfvars(TFVARS_FILE)
-    previous_owner = tfvars.get('owner', '')
-    tfvars['owner'] = owner
-    write_tfvars(TFVARS_FILE, tfvars)
-    return previous_owner != owner
+def update_owner_in_file(owner, file_path):
+    logging.debug(f"Updating owner in file: {file_path} to: {owner}")
+    lines = read_tf_file(file_path)
+    updated = False
+    for i, line in enumerate(lines):
+        if line.strip().startswith('owner'):
+            key, value = line.split('=', 1)
+            current_value = value.strip().strip('"')
+            if current_value != owner:
+                lines[i] = f'{key.strip()} = "{owner}"\n'
+                updated = True
+            break
+
+    if updated:
+        write_tf_file(file_path, lines)
+        logging.info(f"Owner updated successfully in {file_path}.")
+    else:
+        logging.info(f"Owner in {file_path} is already up-to-date or not found.")
 
 def main():
     logging.debug("Starting main function.")
@@ -74,16 +73,15 @@ def main():
 
     if owner:
         logging.info(f"Owner: {owner}")
-        if update_owner_in_tfvars(owner):
-            logging.info("Owner updated successfully.")
-            return 0
-        else:
-            logging.info("Owner was already up-to-date.")
-            return 0
+        tf_files = [file for file in glob.glob("*.tf") if os.path.isfile(file)]
+        for file_path in tf_files:
+            update_owner_in_file(owner, file_path)
+        return 0
     else:
         logging.error("Could not determine the owner.")
         return 1
 
 if __name__ == "__main__":
     logging.debug("Script execution started")
-    sys.exit(main())
+    exit_code = main()
+    sys.exit(exit_code)
